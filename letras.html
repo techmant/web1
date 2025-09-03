@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechmanTS - Responsive</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0; /* Eliminado el padding excesivo */
+      background-color: #FFFFFF;
+      color: black;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+      padding: 20px; /* Solo un poco de padding interno */
+    }
+
+    .logo {
+      font-size: 5rem;
+      font-weight: bold;
+      color: #000;
+      margin-bottom: 20px;
+    }
+
+    .tagline {
+      font-size: 1.8rem;
+      text-align: center;
+      line-height: 1.6;
+      padding: 0 10px;
+    }
+
+    .dynamic-container {
+      display: inline-flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      vertical-align: top;
+      justify-content: center;
+    }
+
+    .dynamic {
+      color: #00d4ff;
+      font-weight: bold;
+      animation: glow 3s ease-in-out infinite;
+      min-width: 100px;
+      text-align: center;
+      font-size: 2rem;
+    }
+
+    .fixed {
+      color: #333;
+      display: inline-block;
+      font-size: 1em;
+    }
+
+    @keyframes glow {
+      0% { text-shadow: 0 0 5px rgba(0, 212, 255, 0.5); }
+      50% { text-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 30px rgba(255, 200, 0, 0.6); }
+      100% { text-shadow: 0 0 5px rgba(0, 212, 255, 0.5); }
+    }
+
+    /* --- Responsive Design --- */
+    @media (max-width: 768px) {
+      .logo {
+        font-size: 3.5rem;
+      }
+
+      .tagline {
+        font-size: 1.4rem;
+        line-height: 1.5;
+      }
+
+      .dynamic {
+        font-size: 1.6rem;
+        min-width: 90px;
+      }
+
+      .fixed {
+        font-size: 0.95em;
+      }
+
+      .dynamic-container {
+        gap: 8px;
+      }
+
+      body {
+        padding: 0; /* No más padding en body */
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 2.8rem;
+      }
+
+      .tagline {
+        font-size: 1.2rem;
+        line-height: 1.4;
+      }
+
+      .dynamic {
+        font-size: 1.4rem;
+        min-width: 80px;
+      }
+
+      .fixed {
+        font-size: 0.9em;
+      }
+
+      .container {
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <p class="tagline">
+      Tu tienda online ofrece:
+      <span class="dynamic-container">
+        <span class="dynamic" id="platform">Netflix</span>
+      </span>
+      <span class="fixed">cuentas de entretenimiento para disfrutar en familia.</span>
+    </p>
+  </div>
+
+  <script>
+    const platforms = [
+      "Netflix", "PrimeVideo", "Max", "Disney+", 
+      "Crunchyroll", "YT Premium", "Spotify Premium", "FlujoTV"
+    ];
+
+    const element = document.getElementById("platform");
+    let index = 0;
+
+    setInterval(() => {
+      element.textContent = platforms[index];
+      index = (index + 1) % platforms.length;
+    }, 3000);
+  </script>
+
+</body>
+</html>
