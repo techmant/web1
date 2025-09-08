@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tu Sitio</title>
+  <title>TecMants</title>
   <style>
     * {
       margin: 0;
@@ -14,8 +14,10 @@
     body, html {
       overflow-x: hidden;
       font-family: Arial, sans-serif;
+      background-color: #000;
     }
 
+    /* Contendor del video: responsive */
     .video-container {
       position: fixed;
       top: 0;
@@ -26,80 +28,83 @@
       overflow: hidden;
     }
 
-    video#bg-video {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      min-width: 100%;
-      min-height: 100%;
-      width: auto;
-      height: auto;
-      transform: translate(-50%, -50%);
-      object-fit: cover;
-      display: none; /* Oculto hasta que cargue */
-    }
-
-    .content-overlay {
-      position: relative;
-      z-index: 1;
-      color: white;
-      text-align: center;
-      padding-top: 20vh;
-      background-color: rgba(0, 0, 0, 0.5);
-      height: 100vh;
-    }
-
-    .content-overlay h1 {
-      font-size: 4rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-    }
-
-    .content-overlay p {
-      font-size: 1.5rem;
-      max-width: 800px;
-      margin: 0 auto;
-      line-height: 1.6;
-    }
-
-    /* Efecto parallax simulado */
-    .parallax-bg {
+    /* Video responsive con aspect ratio 16:9 */
+    .video-wrapper {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('https://yourimageurl.com/background.jpg'); /* Opcional */
-      background-attachment: fixed;
-      opacity: 0.3;
-      z-index: -2;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    video#bg-video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: cover; /* Cubre todo sin cortar */
+      display: none;
+    }
+
+    /* Contenido: abajo del video */
+    .content-overlay {
+      position: relative;
+      z-index: 1;
+      color: white;
+      text-align: center;
+      padding: 2rem;
+      margin-top: 60vh; /* Ajusta para que esté abajo */
+      background-color: rgba(0, 0, 0, 0.7);
+      max-width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .content-overlay h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+      letter-spacing: 2px;
+    }
+
+    .content-overlay p {
+      font-size: 1.2rem;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     }
   </style>
 </head>
 <body>
 
-  <!-- Contenido principal -->
+  <!-- Video de fondo: ahora completamente responsive -->
+  <div class="video-container">
+    <div class="video-wrapper">
+      <video id="bg-video" autoplay muted loop playsinline>
+        <source src="https://i.imgur.com/3dCvNzH.mp4" type="video/mp4">
+        Tu navegador no soporta videos.
+      </video>
+    </div>
+  </div>
+
+  <!-- Contenido: abajo del video -->
   <div class="content-overlay">
     <h1>TEC MANTS</h1>
     <p>Tu tienda online ofrece <strong>Prime Video</strong> y más cuentas de entretenimiento para disfrutar en familia.</p>
   </div>
 
-  <!-- Video de fondo -->
-  <div class="video-container">
-    <video id="bg-video" autoplay muted loop playsinline>
-      <source src="https://i.imgur.com/3dCvNzH.mp4" type="video/mp4">
-      Tu navegador no soporta videos.
-    </video>
-  </div>
-
-  <!-- Cuenta regresiva (eliminada) -->
-
   <script>
     // Espera a que el video cargue
     const video = document.getElementById('bg-video');
-    const container = document.querySelector('.video-container');
 
-    // Mostrar video solo cuando esté listo
     video.addEventListener('loadeddata', () => {
       video.style.display = 'block';
     });
@@ -107,7 +112,6 @@
     // Simulación de parallax con scroll
     window.addEventListener('scroll', () => {
       const scrollTop = window.pageYOffset;
-      const video = document.getElementById('bg-video');
       video.style.transform = `translate(-50%, -50%) scale(${1 - scrollTop / 1500})`;
     });
   </script>
