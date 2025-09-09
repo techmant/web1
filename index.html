@@ -2,101 +2,48 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Restaurante Realidad Aumentada</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
+  <title>Menú RA - Restaurante</title>
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.2.1/aframe/build/aframe-ar.js"></script>
   <style>
-    body {
+    body, html {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f7f7f7;
+      padding: 0;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
     }
-    header {
-      background: #b22222;
-      color: #fff;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 { margin: 0; }
-    .menu {
-      padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-    .plato {
-      background: #fff;
-      border-radius: 12px;
-      padding: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .plato img {
-      max-width: 100%;
-      border-radius: 12px;
-    }
-    .btn-ar {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #b22222;
-      color: #fff;
+    #info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(255,255,255,0.8);
+      padding: 10px;
       border-radius: 8px;
-      text-decoration: none;
-      transition: 0.3s;
-    }
-    .btn-ar:hover {
-      background: #8b1a1a;
-    }
-    #ar-section {
-      height: 100vh;
-      display: none;
+      font-family: sans-serif;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>🍴 Restaurante El Sabor</h1>
-    <p>Escanea un plato en Realidad Aumentada</p>
-  </header>
+  <div id="info">
+    Escanea el marcador AR para ver el plato en realidad aumentada.
+  </div>
 
-  <section class="menu">
-    <div class="plato">
-      <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg" alt="Hamburguesa">
-      <h2>Hamburguesa Especial</h2>
-      <p>Carne jugosa, pan artesanal, queso cheddar y vegetales frescos.</p>
-      <a href="#ar-section" class="btn-ar" onclick="mostrarAR()">Ver en AR</a>
-    </div>
-    <div class="plato">
-      <img src="https://cdn.pixabay.com/photo/2016/11/18/15/51/spaghetti-1835412_1280.jpg" alt="Spaghetti">
-      <h2>Spaghetti a la Boloñesa</h2>
-      <p>Pasta italiana con salsa casera y queso parmesano.</p>
-      <a href="#ar-section" class="btn-ar" onclick="mostrarAR()">Ver en AR</a>
-    </div>
-  </section>
+  <!-- Escena A-Frame con AR.js -->
+  <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false;">
+    <!-- Marcador tipo patrón -->
+    <a-marker preset="hiro">
+      <!-- Modelo 3D del plato de comida -->
+      <a-entity 
+        gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
+        scale="0.05 0.05 0.05"
+        position="0 0 0"
+        rotation="0 0 0">
+      </a-entity>
+    </a-marker>
 
-  <!-- Sección de AR -->
-  <section id="ar-section">
-    <a-scene embedded arjs>
-      <!-- Marcador tipo HIRO -->
-      <a-marker preset="hiro">
-        <!-- Modelo 3D de ejemplo -->
-        <a-entity 
-          gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
-          scale="0.5 0.5 0.5"
-          rotation="0 180 0"
-          position="0 0 0">
-        </a-entity>
-      </a-marker>
-      <a-entity camera></a-entity>
-    </a-scene>
-  </section>
-
-  <script>
-    function mostrarAR() {
-      document.querySelector('.menu').style.display = 'none';
-      document.querySelector('#ar-section').style.display = 'block';
-    }
-  </script>
+    <!-- Cámara AR -->
+    <a-entity camera></a-entity>
+  </a-scene>
 </body>
 </html>
