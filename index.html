@@ -1,112 +1,102 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TecMants</title>
+  <meta charset="UTF-8">
+  <title>Restaurante Realidad Aumentada</title>
+  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+  <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/3.3.2/aframe/build/aframe-ar.js"></script>
   <style>
-    * {
+    body {
       margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body, html {
-      overflow-x: hidden;
       font-family: Arial, sans-serif;
-      background-color: #000;
+      background: #f7f7f7;
     }
-
-    .video-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-    }
-
-    video#bg-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .content-overlay {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: white;
+    header {
+      background: #b22222;
+      color: #fff;
       text-align: center;
-      max-width: 90%;
-      opacity: 0; /* oculto al inicio */
-      transition: opacity 0.5s ease; /* fade rápido */
+      padding: 20px;
     }
-
-    .content-overlay h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
-      letter-spacing: 3px;
+    h1 { margin: 0; }
+    .menu {
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
     }
-
-    .content-overlay p {
-      font-size: 1.2rem;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: 0 auto;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.9);
+    .plato {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: center;
     }
-
-    @media (max-width: 768px) {
-      .content-overlay h1 { font-size: 2rem; }
-      .content-overlay p { font-size: 1rem; }
+    .plato img {
+      max-width: 100%;
+      border-radius: 12px;
     }
-
-    @media (max-width: 480px) {
-      .content-overlay h1 { font-size: 1.5rem; }
-      .content-overlay p { font-size: 0.9rem; }
+    .btn-ar {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #b22222;
+      color: #fff;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .btn-ar:hover {
+      background: #8b1a1a;
+    }
+    #ar-section {
+      height: 100vh;
+      display: none;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>🍴 Restaurante El Sabor</h1>
+    <p>Escanea un plato en Realidad Aumentada</p>
+  </header>
 
-  <div class="video-container">
-    <video id="bg-video" autoplay muted loop playsinline>
-      <source src="https://i.imgur.com/juakEJ7.mp4" type="video/mp4">
-      Tu navegador no soporta videos.
-    </video>
-  </div>
+  <section class="menu">
+    <div class="plato">
+      <img src="https://cdn.pixabay.com/photo/2016/03/05/19/02/hamburger-1238246_1280.jpg" alt="Hamburguesa">
+      <h2>Hamburguesa Especial</h2>
+      <p>Carne jugosa, pan artesanal, queso cheddar y vegetales frescos.</p>
+      <a href="#ar-section" class="btn-ar" onclick="mostrarAR()">Ver en AR</a>
+    </div>
+    <div class="plato">
+      <img src="https://cdn.pixabay.com/photo/2016/11/18/15/51/spaghetti-1835412_1280.jpg" alt="Spaghetti">
+      <h2>Spaghetti a la Boloñesa</h2>
+      <p>Pasta italiana con salsa casera y queso parmesano.</p>
+      <a href="#ar-section" class="btn-ar" onclick="mostrarAR()">Ver en AR</a>
+    </div>
+  </section>
 
-  <div class="content-overlay" id="overlay">
-    <h1>TEC MANTS</h1>
-    <p>Tu tienda online ofrece <strong>Prime Video</strong> y más cuentas de entretenimiento para disfrutar en familia.</p>
-  </div>
+  <!-- Sección de AR -->
+  <section id="ar-section">
+    <a-scene embedded arjs>
+      <!-- Marcador tipo HIRO -->
+      <a-marker preset="hiro">
+        <!-- Modelo 3D de ejemplo -->
+        <a-entity 
+          gltf-model="https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models/2.0/Duck/glTF/Duck.gltf"
+          scale="0.5 0.5 0.5"
+          rotation="0 180 0"
+          position="0 0 0">
+        </a-entity>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </section>
 
   <script>
-    const video = document.getElementById('bg-video');
-    const overlay = document.getElementById('overlay');
-
-    const whiteScreenStart = 8; // segundo inicio del cuadro blanco
-    const whiteScreenEnd = 9;   // segundo final del cuadro blanco (corto)
-
-    video.addEventListener('loadeddata', () => {
-      video.play();
-    });
-
-    video.addEventListener('timeupdate', () => {
-      const currentTime = video.currentTime;
-
-      // Solo mostrar durante el cuadro blanco
-      if (currentTime >= whiteScreenStart && currentTime <= whiteScreenEnd) {
-        overlay.style.opacity = "1";
-      } else {
-        overlay.style.opacity = "0";
-      }
-    });
+    function mostrarAR() {
+      document.querySelector('.menu').style.display = 'none';
+      document.querySelector('#ar-section').style.display = 'block';
+    }
   </script>
-
 </body>
 </html>
